@@ -1,0 +1,96 @@
+FUNCTION_BLOCK model 
+
+VAR_INPUT
+    recency : REAL;
+    frequency : REAL;
+    time : REAL;
+END_VAR
+
+VAR_OUTPUT
+    sonuc : REAL;
+END_VAR
+
+//Bulanıklaştırma
+FUZZIFY frequency 
+    TERM az :=(0,1)(1,1)(2,0);
+    TERM normal := (1,0)(3,1)(5,0);
+    TERM cok :=(4,0)(7,1)(10,0);
+    TERM  cok_fazla:=(8,0)(17,1)(50,1);
+END_FUZZIFY
+
+FUZZIFY recency 
+    TERM az :=(0,1)(3,1)(4,0);
+    TERM orta :=(3,0)(4,1)(12,0);
+    TERM  cok:=(8,0)(14,1)(23,1);
+   
+END_FUZZIFY
+
+FUZZIFY time
+    TERM cok_yeni :=(0,0)(9,1)(25,1)(35,0);
+    TERM  yeni:=(25,0)(35,1)(60,0);
+    TERM  eski:=(55,0)(70,1)(98,1);
+    
+END_FUZZIFY
+
+
+//Durulama
+DEFUZZIFY sonuc
+    TERM vermez :=(0,1)(1,0);
+    TERM verir :=(0,0)(1,1);
+    METHOD : MM;
+    DEFAULT :=-1; //Modelin dÄ±ÅŸÄ±nda bir ÅŸey tanÄ±mlanÄ±rsa
+END_DEFUZZIFY
+
+
+//BULANIK KURALLAR YAZILIR
+RULEBLOCK kuralBlok1
+    AND : MIN; //Genelde bÃ¶yledÄ±r
+    ACT : PROD; //Aktivasyon metodu 
+    ACCU : MAX; //Akivasyon sonucuna gÃ¶re hangisini alÄ±cam
+    
+
+    RULE 1 : IF frequency IS az AND time IS cok_yeni AND recency IS az THEN sonuc IS vermez;
+    RULE 2 : IF frequency IS az AND time IS cok_yeni AND recency IS orta THEN sonuc IS vermez;
+    RULE 3 : IF frequency IS az AND time IS cok_yeni AND recency IS cok THEN sonuc IS vermez;
+    RULE 4 : IF frequency IS az AND time IS yeni AND recency IS az THEN sonuc IS vermez;
+    RULE 5 : IF frequency IS az AND time IS yeni AND recency IS orta THEN sonuc IS vermez;
+    RULE 6 : IF frequency IS az AND time IS yeni AND recency IS cok THEN sonuc IS vermez;
+    RULE 7 : IF frequency IS az AND time IS eski AND recency IS az THEN sonuc IS vermez;
+    RULE 8 : IF frequency IS az AND time IS eski AND recency IS orta THEN sonuc IS vermez;
+    RULE 9 : IF frequency IS az AND time IS eski AND recency IS cok THEN sonuc IS vermez;
+    RULE 10 : IF frequency IS normal AND time IS cok_yeni AND recency IS az THEN sonuc IS vermez;
+    RULE 11 : IF frequency IS normal AND time IS cok_yeni AND recency IS orta THEN sonuc IS verir;
+    RULE 12 : IF frequency IS normal AND time IS cok_yeni AND recency IS cok THEN sonuc IS vermez;
+    RULE 13 : IF frequency IS normal AND time IS yeni AND recency IS az THEN sonuc IS vermez;
+    RULE 14 : IF frequency IS normal AND time IS yeni AND recency IS orta THEN sonuc IS vermez;
+    RULE 15 : IF frequency IS normal AND time IS yeni AND recency IS cok THEN sonuc IS vermez;
+    RULE 16 : IF frequency IS normal AND time IS eski AND recency IS az THEN sonuc IS vermez;
+    RULE 17 : IF frequency IS normal AND time IS eski AND recency IS orta THEN sonuc IS vermez;
+    RULE 18 : IF frequency IS normal AND time IS eski AND recency IS cok THEN sonuc IS vermez;
+    RULE 19 : IF frequency IS cok AND time IS cok_yeni AND recency IS az THEN sonuc IS verir;
+    RULE 20 : IF frequency IS cok AND time IS cok_yeni AND recency IS orta THEN sonuc IS vermez;
+    RULE 21 : IF frequency IS cok AND time IS cok_yeni AND recency IS cok THEN sonuc IS vermez;
+    RULE 22 : IF frequency IS cok AND time IS yeni AND recency IS az THEN sonuc IS vermez;
+    RULE 23 : IF frequency IS cok AND time IS yeni AND recency IS orta THEN sonuc IS vermez;
+    RULE 24 : IF frequency IS cok AND time IS yeni AND recency IS cok THEN sonuc IS vermez;
+    RULE 25 : IF frequency IS cok AND time IS eski AND recency IS az THEN sonuc IS vermez;
+    RULE 26 : IF frequency IS cok AND time IS eski AND recency IS orta THEN sonuc IS vermez;
+    RULE 27 : IF frequency IS cok AND time IS eski AND recency IS cok THEN sonuc IS vermez;
+    RULE 19 : IF frequency IS cok_fazla AND time IS cok_yeni AND recency IS az THEN sonuc IS verir;
+    RULE 20 : IF frequency IS cok_fazla AND time IS cok_yeni AND recency IS orta THEN sonuc IS vermez;
+    RULE 21 : IF frequency IS cok_fazla AND time IS cok_yeni AND recency IS cok THEN sonuc IS vermez;
+    RULE 22 : IF frequency IS cok_fazla AND time IS yeni AND recency IS az THEN sonuc IS verir;
+    RULE 23 : IF frequency IS cok_fazla AND time IS yeni AND recency IS orta THEN sonuc IS vermez;
+    RULE 24 : IF frequency IS cok_fazla AND time IS yeni AND recency IS cok THEN sonuc IS vermez;
+    RULE 25 : IF frequency IS cok_fazla AND time IS eski AND recency IS az THEN sonuc IS vermez;
+    RULE 26 : IF frequency IS cok_fazla AND time IS eski AND recency IS orta THEN sonuc IS vermez;
+    RULE 27 : IF frequency IS cok_fazla AND time IS eski AND recency IS cok THEN sonuc IS vermez;
+/*
+    RULE 1 : IF frequency IS cok_fazla AND time IS eski AND recency IS az THEN sonuc IS verir;
+   RULE 2 : IF frequency IS cok_fazla AND time IS cok_yeni AND recency IS az THEN sonuc IS verir;
+ RULE 3 : IF frequency IS cok_fazla AND time IS yeni AND recency IS az THEN sonuc IS verir;
+     RULE 3 : IF frequency IS cok_fazla AND time IS eski AND recency IS az THEN sonuc IS vermez;
+*/
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
