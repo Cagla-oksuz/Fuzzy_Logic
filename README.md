@@ -30,8 +30,12 @@ Since my outputs should be 0 and 1 and there can be no division by 0, the divide
 And print it to the screen. I drew member functions and graphs.
 
 
+# Added member functions for random data
+![1](https://user-images.githubusercontent.com/61979226/136330359-f4ea8918-18fb-4912-a4fb-95ea6c49715e.png)
 
+# output examples
+![2](https://user-images.githubusercontent.com/61979226/136330363-1bf3e5f0-f57d-43e9-b944-bf365ed9bd25.png)
 
-
-
+# The mean absolute percentage error (MAPE)
+![3](https://user-images.githubusercontent.com/61979226/136330371-8f1962d4-3730-4f14-a3e4-f74c19eb7ddd.png)
 
