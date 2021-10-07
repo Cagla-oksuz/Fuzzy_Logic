@@ -1,4 +1,4 @@
-# Fuzzy_Logic
+# Fuzzy_Logic - Bulanık Mantık
 
 # Özet
 Seçilen veri setinin bulanık modelini oluşturmak amacı ile üye fonksiyonlarını oluşturmak,
